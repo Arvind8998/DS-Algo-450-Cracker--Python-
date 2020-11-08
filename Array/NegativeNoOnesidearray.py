@@ -8,7 +8,7 @@ def swap(arr,i,j):
 
 def rearrange(arr):
     j=0
-    for i,value in enumerate(arr,0  ):
+    for i,value in enumerate(arr,0):
         if(arr[i]<0):
             swap(arr,i,j)
             j=j+1
