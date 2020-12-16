@@ -28,5 +28,5 @@ def _quickSelect(arr,l,r,k):
     else:
         return arr[pi]
 
-arr = [1,3,5,7,8,9,10,13]
+arr = [7, 10, 4, 3, 20, 15]
 print(_quickSelect(arr,0,len(arr)-1,3))
