@@ -8,6 +8,8 @@ class LinkedList:
         self.head = None
         self.size = 0
         self.tail = None
+        self.left = None
+
 
     def addLast(self,value):
 
@@ -259,6 +261,49 @@ class LinkedList:
         return prev.printLinkList()
 
 
+    def displayreverseLinkListrecursive(self,node):
+        if(node == None):
+            return
+        self.displayreverseLinkListrecursive(node.next);
+        print(node.data, end=" ")
+
+    def reversePointerHelper(self,node):
+        if(node == None):
+            return
+        self.reversePointerHelper(node.next);
+        if(node == self.tail):
+            pass
+        else:
+            node.next.next = node
+        return
+
+    def reverselinkListbyPointerRecursion(self):
+        self.reversePointerHelper(self.head)
+        self.head.next = None
+        temp = self.head
+        self.head = self.tail
+        self.tail = temp
+        return self.printLinkList()
+
+    def reverseDataHelper(self,right,floor):
+        if(right == None):
+            return
+        self.reverseDataHelper(right.next,floor+1)
+
+        if(floor > self.size/2):
+            temp = right.data
+            right.data = self.left.data
+            self.left.data = temp
+
+            self.left = self.left.next
+
+    def reverseLinkListBydata(self):
+        right = self.left = self.head
+
+        self.reverseDataHelper(right,0)
+        self.printLinkList()
+
+
     def stackSize(self):
         return self.linkListSize()
 
@@ -324,6 +369,9 @@ list3.addLast(20)
 # list.merge2LinkedList(list,list2)
 # list3.oddEven()
 # list3.Kreverse(3)
+# list3.displayreverseLinkListrecursive(list3.head)
+# list3.reverselinkListbyPointerRecursion()
+list3.reverseLinkListBydata()
 
 # list.stackSize()
 # list.stackPush(60)
