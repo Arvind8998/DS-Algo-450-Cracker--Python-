@@ -214,20 +214,20 @@ class LinkedList:
             fast = fast.next.next
         return  slow
 
-    # def mergeSort(self, head):
-    #     if( head is None or head.next is None):
-    #         new_list = LinkedList();
-    #         new_list.addLast(head.data)
-    #         return head
-    #
-    #     mid = self.midNode(head)
-    #     nextToMid = mid.next
-    #     mid.next = None
-    #
-    #     fsh = self.mergeSort(head)
-    #     ssh = self.mergeSort(nextToMid)
-    #     mergeSortedList =  LinkedList.merge2LinkedList(fsh,ssh)
-    #     return mergeSortedList
+    def mergeSort(self, head):
+        if( head is None or head.next is None):
+            new_list = LinkedList();
+            new_list.addLast(head.data)
+            return head
+
+        mid = self.midNode(head)
+        nextToMid = mid.next
+        mid.next = None
+
+        fsh = self.mergeSort(head)
+        ssh = self.mergeSort(nextToMid)
+        mergeSortedList =  self.merge2LinkedList(fsh,ssh)
+        return mergeSortedList
 
     def removeDuplicates(self,listHead):
         while(listHead.next != None):
@@ -303,6 +303,86 @@ class LinkedList:
         self.reverseDataHelper(right,0)
         self.printLinkList()
 
+    def palindromeHelper(self,right):
+        if(right == None):
+            return True
+
+        rres = self.palindromeHelper(right.next)
+
+        if(rres == False):
+            return  False
+        elif self.left.data != right.data:
+            return False
+        else:
+            self.left = self.left.next
+            return True
+
+
+    def isLinkedListPaliendrome(self):
+        right = self.left = self.head
+        print(self.palindromeHelper(right))
+
+    def foldHelper(self,right,floor):
+        if(right == None):
+            return
+
+        self.foldHelper(right.next,floor+1)
+        if(floor > self.size/2):
+            next = self.left.next
+            self.left.next = right
+            right.next = next
+            self.left = next
+        elif(floor == self.size/2):
+            self.tail = right
+            self.tail.next = None
+
+
+    def foldLinkedList(self):
+        self.left = right = self.head
+        self.foldHelper(right,0)
+        self.printLinkList()
+
+    def sumofLinkedListHelper(self,head1,place1,head2,place2,res):
+        newData = 0
+        if(head1 == None and head2 == None):
+            return 0
+
+        if(place1 > place2):
+            oldCarry = self.sumofLinkedListHelper(head1.next,place1-1,head2,place2,res)
+            newData = head1.data + oldCarry
+        elif (place1 < place2):
+            oldCarry = self.sumofLinkedListHelper(head1, place1, head2.next, place2-1,res)
+            newData = head2.data + oldCarry
+        else:
+            oldCarry = self.sumofLinkedListHelper(head1.next, place1-1, head2.next, place2-1,res)
+            newData =  head1.data + head2.data + oldCarry
+
+        sumDigit = (newData % 10)
+        newCarry = int(newData / 10)
+        res.addFirst(sumDigit)
+        return newCarry
+
+    def Sumof2LinkedList(self, head1, place1, head2, place2):
+        res = LinkedList()
+        newcarry = self.sumofLinkedListHelper(head1,place1,head2,place2,res)
+        res.addFirst(newcarry)
+        res.printLinkList()
+
+    def findLinkedListIntersection(self,head1,size1,head2,size2):
+        delta = abs(size1 - size2)
+        if(size1 > size2):
+            for i in range(0,delta):
+                head1 = head1.next
+        else:
+            for i in range(0, delta):
+                head2 = head2.next
+
+        while(head1.data != head2.data):
+            head1 = head1.next
+            head2 = head2.next
+        return head1.data
+
+
 
     def stackSize(self):
         return self.linkListSize()
@@ -352,7 +432,42 @@ list3.addLast(63)
 list3.addLast(92)
 list3.addLast(20)
 
-# list3.mergeSort(list3.head).printLinkList()
+list4 = LinkedList()
+list4.addLast('b')
+list4.addLast('a')
+list4.addLast('c')
+list4.addLast('a')
+list4.addLast('b')
+list4.addLast('a')
+
+list5 = LinkedList()
+list5.addLast(5)
+list5.addLast(6)
+list5.addLast(3)
+
+# list5.addLast(6)
+# list5.addLast(3)
+
+list6 = LinkedList()
+list6.addLast(8)
+list6.addLast(4)
+list6.addLast(2)
+
+list7 = LinkedList()
+list7.addLast(3)
+list7.addLast(6)
+list7.addLast(9)
+list7.addLast(15)
+list7.addLast(30)
+
+
+list8 = LinkedList()
+list8.addLast(10)
+list8.addLast(15)
+list8.addLast(30)
+
+
+list3.mergeSort(list3.head).printLinkList()
 # list3.removeDuplicates(list3.head)
 # list3.printLinkList()
 # list.removeFirst()
@@ -371,8 +486,11 @@ list3.addLast(20)
 # list3.Kreverse(3)
 # list3.displayreverseLinkListrecursive(list3.head)
 # list3.reverselinkListbyPointerRecursion()
-list3.reverseLinkListBydata()
-
+# list3.reverseLinkListBydata()
+# list4.isLinkedListPaliendrome()
+# list4.Sumof2LinkedList(list5.head, list5.size, list6.head, list6.size)
+# print(list7.findLinkedListIntersection(list7.head,list7.size,list8.head,list8.size))
+# list4.foldLinkedList()
 # list.stackSize()
 # list.stackPush(60)
 # list.stackPop()
